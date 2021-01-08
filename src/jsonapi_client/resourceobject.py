@@ -411,7 +411,7 @@ class ResourceObject(AbstractJsonObject):
 
     def _handle_data(self, data):
         from .objects import Links, Meta
-        self.id = data['id']
+        self.id = self.pk = data['id']
         self.type = data['type']
         self.links = Links(self.session, data.get('links', {}))
         self.meta = Meta(self.session, data.get('meta', {}))
