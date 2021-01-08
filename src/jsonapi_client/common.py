@@ -106,11 +106,11 @@ def error_from_response(response_content):
 
 
 def jsonify_attribute_name(name):
-    return name.replace('__', '.').replace('_', '-')
+    return name.replace('__', '.')#.replace('_', '-')
 
 
 def dejsonify_attribute_name(name):
-    return name.replace('.', '__').replace('-', '_')
+    return name.replace('.', '__')#.replace('-', '_')
 
 
 def jsonify_attribute_names(iterable):
