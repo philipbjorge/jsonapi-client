@@ -34,6 +34,7 @@ import logging
 from itertools import chain
 from typing import Optional, Union, Awaitable, TYPE_CHECKING
 from urllib.parse import urlparse
+import re
 
 from .common import AbstractJsonObject, jsonify_attribute_name, ResourceTuple
 from .resourceobject import ResourceObject
@@ -149,7 +150,8 @@ class ResourceIdentifier(AbstractJsonObject):
 
     @property
     def url(self):
-        return f'{self.session.url_prefix}/{self.type}/{self.id}'
+        type = re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
+        return f'{self.session.url_prefix}/{type}/{self.id}'
 
     def __str__(self):
         return f'{self.type}: {self.id}'
