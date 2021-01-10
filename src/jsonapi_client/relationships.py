@@ -225,11 +225,12 @@ class SingleRelationship(AbstractRelationship):
         super()._handle_data(data)
         if self._resource_data is None:
             self._resource_identifier = None
-        elif self._resource_data.get('id', True):
-            self._resource_identifier = None
-        else:
+        elif self._resource_data.get('id'):
             self._resource_identifier = ResourceIdentifier(self.session, self._resource_data)
             del self._resource_data  # This is not intended to be used after this
+        else:
+            self._resource_identifier = None
+            self._resource_data = self._resource_data
 
     async def _fetch_async(self) -> 'List[ResourceObject]':
         self.session.assert_async()
