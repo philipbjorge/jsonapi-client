@@ -150,7 +150,11 @@ class ResourceIdentifier(AbstractJsonObject):
 
     @property
     def url(self):
+        # Hack: Convert camelcase types to snakecase
+        # Hack: Pluralize to match our routes
         type = re.sub(r'(?<!^)(?=[A-Z])', '_', self.type).lower()
+        remap_plural = { 'company': 'companies' }
+        type = remap_plural[type] if type in remap_plural else remap_plural + "s"
         return f'{self.session.url_prefix}/{type}/{self.id}'
 
     def __str__(self):
