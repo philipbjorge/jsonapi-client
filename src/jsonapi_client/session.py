@@ -53,6 +53,18 @@ if TYPE_CHECKING:
 
 from .resourceobject import ResourceObject
 
+import json
+from uuid import UUID
+
+
+class UUIDEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UUID):
+            # if the obj is uuid, we simply return the value of uuid
+            return str(obj)
+        return json.JSONEncoder.default(self, obj)
+   
+
 logger = logging.getLogger(__name__)
 NOT_FOUND = object()
 
@@ -535,7 +547,7 @@ class Session:
         headers = {'Content-Type':'application/vnd.api+json'}
         headers.update(kwargs.pop('headers', {}))
 
-        response = requests.request(http_method, url, json=send_json,
+        response = requests.request(http_method, url, data=json.dumps(send_json, cls=UUIDEncoder),
                                     headers=headers,
                                     **kwargs)
 
