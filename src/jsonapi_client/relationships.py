@@ -270,7 +270,7 @@ class SingleRelationship(AbstractRelationship):
 
     @property
     def as_json_resource_identifiers(self) -> dict:
-        if self._resource_data:
+        if hasattr(self, '_resource_data'):
             return self._resource_data
         if self._resource_identifier is None:
             return None
