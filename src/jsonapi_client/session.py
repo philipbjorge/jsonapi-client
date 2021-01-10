@@ -178,7 +178,7 @@ class Session:
             elif res_types and value.type not in res_types:
                 raise TypeError(f'Invalid resource type {value.type}. '
                                 f'Should be one of {res_types}')
-            if isinstance(value, ResourceObject) and value.id:
+            if isinstance(value, ResourceObject) and not value.id:
                return value.json
             else:
                return {'id': value.id, 'type': value.type}
