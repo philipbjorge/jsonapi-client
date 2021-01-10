@@ -31,6 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import logging
+import re
 from itertools import chain
 from typing import Set, Optional, Awaitable, Union, Iterable, TYPE_CHECKING
 
@@ -474,11 +475,13 @@ class ResourceObject(AbstractJsonObject):
     @property
     def url(self) -> str:
         url = str(self.links.self)
-        return url or self.id and f'{self.session.url_prefix}/{self.type}/{self.id}'
+        type = re.sub(r'(?<!^)(?=[A-Z])', '_', self.type).lower()
+        return url or self.id and f'{self.session.url_prefix}/{type}/{self.id}/'
 
     @property
     def post_url(self) -> str:
-        return f'{self.session.url_prefix}/{self.type}'
+        type = re.sub(r'(?<!^)(?=[A-Z])', '_', self.type).lower()
+        return f'{self.session.url_prefix}/{type}/'
 
     def validate(self):
         """
