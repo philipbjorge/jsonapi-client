@@ -338,7 +338,7 @@ class ResourceObject(AbstractJsonObject):
     """
 
     #: Attributes (that are not starting with _) that we want to ignore in __setattr__
-    __attributes = ['id', 'type', 'links', 'meta', 'commit_meta']
+    __attributes = ['id', 'pk', 'type', 'links', 'meta', 'commit_meta']
 
     def __init__(self, session: 'Session', data: Union[dict, list]) -> None:
         self._delete = False
