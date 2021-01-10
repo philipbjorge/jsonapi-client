@@ -177,7 +177,10 @@ class Session:
             elif res_types and value.type not in res_types:
                 raise TypeError(f'Invalid resource type {value.type}. '
                                 f'Should be one of {res_types}')
-            return {'id': value.id, 'type': value.type}
+            if isinstance(value, ResourceObject) and value.id:
+               return value.json
+            else:
+               return {'id': value.id, 'type': value.type}
         else:
             if not res_type:
                 raise ValueError('Use ResourceTuple to identify types '
