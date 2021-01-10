@@ -150,7 +150,7 @@ class ResourceIdentifier(AbstractJsonObject):
 
     @property
     def url(self):
-        type = re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
+        type = re.sub(r'(?<!^)(?=[A-Z])', '_', self.type).lower()
         return f'{self.session.url_prefix}/{type}/{self.id}'
 
     def __str__(self):
