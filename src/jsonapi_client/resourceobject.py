@@ -475,12 +475,12 @@ class ResourceObject(AbstractJsonObject):
     @property
     def url(self) -> str:
         url = str(self.links.self)
-        type = re.sub(r'(?<!^)(?=[A-Z])', '_', self.type).lower()
+        type = re.sub(r'(?<!^)(?=[A-Z])', '_', self.type).lower() + "s" # hack: pluralize
         return url or self.id and f'{self.session.url_prefix}/{type}/{self.id}/'
 
     @property
     def post_url(self) -> str:
-        type = re.sub(r'(?<!^)(?=[A-Z])', '_', self.type).lower()
+        type = re.sub(r'(?<!^)(?=[A-Z])', '_', self.type).lower() + "s" # hack: pluralize
         return f'{self.session.url_prefix}/{type}/'
 
     def validate(self):
