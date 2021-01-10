@@ -48,9 +48,10 @@ if TYPE_CHECKING:
     from asyncio import AbstractEventLoop
     from .objects import ResourceIdentifier
     from .document import Document
-    from .resourceobject import ResourceObject
     from .relationships import ResourceTuple
     from .filter import Modifier
+
+from .resourceobject import ResourceObject
 
 logger = logging.getLogger(__name__)
 NOT_FOUND = object()
