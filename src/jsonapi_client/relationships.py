@@ -225,9 +225,11 @@ class SingleRelationship(AbstractRelationship):
         super()._handle_data(data)
         if self._resource_data is None:
             self._resource_identifier = None
+        elif self._resource_data.get('id', True):
+            self._resource_identifier = None
         else:
             self._resource_identifier = ResourceIdentifier(self.session, self._resource_data)
-        del self._resource_data  # This is not intended to be used after this
+            del self._resource_data  # This is not intended to be used after this
 
     async def _fetch_async(self) -> 'List[ResourceObject]':
         self.session.assert_async()
@@ -250,7 +252,7 @@ class SingleRelationship(AbstractRelationship):
         return list(self._resources.values())
 
     def __bool__(self):
-        return bool(self._resource_identifier)
+        return bool(self._resource_identifier) or bool(self._resource_data)
 
     def __str__(self):
         return str(self._resource_identifier)
@@ -267,6 +269,8 @@ class SingleRelationship(AbstractRelationship):
 
     @property
     def as_json_resource_identifiers(self) -> dict:
+        if self._resource_data:
+            return self._resource_data
         if self._resource_identifier is None:
             return None
         return self._resource_identifier.as_resource_identifier_dict()
