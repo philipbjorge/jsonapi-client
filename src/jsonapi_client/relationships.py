@@ -295,8 +295,8 @@ class MultiRelationship(AbstractRelationship):
     def _handle_data(self, data):
         super()._handle_data(data)
         self._resource_identifiers = [ResourceIdentifier(self.session, d)
-                                      for d in self._resource_data]
-        del self._resource_data
+                                      for d in self._resource_data if d.get('id')]
+        self._resource_data = [d for d in self._resource_data if d.get('id', True)]
 
     @property
     def is_single(self) -> bool:
@@ -327,7 +327,8 @@ class MultiRelationship(AbstractRelationship):
 
     @property
     def as_json_resource_identifiers(self) -> List[dict]:
-        return [res.as_resource_identifier_dict() for res in self._resource_identifiers]
+        resource_identifiers = [res.as_resource_identifier_dict() for res in self._resource_identifiers]
+        return resource_identifiers + self._resource_data
 
     def set(self, new_values: Iterable[R_IDENT_TYPES], type_: str=None) -> None:
         self._resource_identifiers = [self._value_to_identifier(value, type_)
@@ -359,7 +360,7 @@ class MultiRelationship(AbstractRelationship):
         return self.add(other)
 
     def __bool__(self):
-        return bool(self._resource_identifiers)
+        return bool(self._resource_identifiers) or bool(self._resource_data)
 
 
 class LinkRelationship(AbstractRelationship):
